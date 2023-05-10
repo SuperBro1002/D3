@@ -4,8 +4,8 @@ class First extends Phaser.Scene {
         super('first');
     }
 
-    preload() {
-
+    preload(){
+        this.load.image("box", "Square.png");
     }
 
     create() {
@@ -54,7 +54,7 @@ class First extends Phaser.Scene {
 
         const group = this.matter.world.nextGroup(true);
 
-        const bridge = this.matter.add.stack(160, 290, 15, 1, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.rectangle(x - 20, y, 53, 20, {
+        const bridge = this.matter.add.stack(160, 290, 23, 1, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.rectangle(x - 20, y, 53, 20, {
             collisionFilter: { group: group },
             chamfer: 5,
             density: 0.005,
@@ -68,26 +68,33 @@ class First extends Phaser.Scene {
                 visible: false
             }
         });
-        
-        const stack = this.matter.add.stack(250, 50, 6, 3, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.rectangle(x, y, 50, 50, Phaser.Math.Between(20, 40)));
 
-        this.matter.add.rectangle(30, 490, 220, 380, {
+        this.matter.add.image(10,10,'box');
+        
+        const stack = this.matter.add.stack(250, 50, 8, 6, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.rectangle(x, y, 50, 50, Phaser.Math.Between(20, 40)));
+
+        const stack2 = this.matter.add.stack(950, 50, 4, 2, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.rectangle(x, y, 100, 50, Phaser.Math.Between(20, 40)));
+
+        const stack3 = this.matter.add.stack(250, 50, 2, 2, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.trapezoid(x, y, 50, 50, 1));
+
+
+        this.matter.add.rectangle(30, 990, 220, 380, {
             isStatic: true,
             chamfer: { radius: 20 }
         }),
 
-        this.matter.add.rectangle(770, 490, 220, 380, {
+        this.matter.add.rectangle(1070, 990, 220, 380, {
             isStatic: true,
             chamfer: { radius: 20 }
         }),
 
         this.matter.add.worldConstraint(bridge.bodies[0], 2, 0.9, {
-            pointA: { x: 140, y: 300 },
+            pointA: { x: 140, y: 800 },
             pointB: { x: -25, y: 0 }
         });
 
         this.matter.add.worldConstraint(bridge.bodies[bridge.bodies.length - 1], 2, 0.9, {
-            pointA: { x: 660, y: 300 },
+            pointA: { x: 960, y: 800 },
             pointB: { x: 25, y: 0 }
         });
 
@@ -100,23 +107,4 @@ class First extends Phaser.Scene {
 }
 
 
-const game = new Phaser.Game({
-    scale: {
-        mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: 1920,
-        height: 1080,
-    },
-    physics: {
-        default: 'matter',
-        matter: {
-            gravity: {
-                y:0.8
-            },
-            debug: true,
-            debugBodyColor: 0xffffff
-        }
-    },
-    scene: [First,],
-    backgroundColor: 0x000000,
-});
+

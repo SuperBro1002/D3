@@ -8,6 +8,29 @@
     <script src="phaser.js"></script>
     <script src="level1.js"></script>
 
+    <script>
+
+    new Phaser.Game({
+        scale: {
+            mode: Phaser.Scale.FIT,
+            autoCenter: Phaser.Scale.CENTER_BOTH,
+            width: 1920,
+            height: 1080,
+        },
+        physics: {
+            default: 'matter',
+            matter: {
+                gravity: {
+                    y:0.8
+                },
+                debug: true,
+                debugBodyColor: 0xffffff
+            }
+        },
+        scene: [First,],
+        backgroundColor: 0x000000,
+    });
+</script>
 
 </head>
 <body>
