@@ -1,7 +1,7 @@
-class First extends Phaser.Scene {
+class Second extends Phaser.Scene {
 
     constructor() {
-        super('first');
+        super('second');
     }
 
     preload() {
@@ -11,19 +11,6 @@ class First extends Phaser.Scene {
         this.load.image("rect", "Rectangle.png");
         this.load.image("triangle", "Triangle.png");
     }
-
-    // update() {
-    //     let timerseconds = 0;
-    //     let timerevent = 0;
-    //     let stuff = this.add.text(50,50, timerseconds);
-
-    //     if (timerseconds < 6000000) {
-    //         timerevent = Phaser.Math.CeilTo(this.time.now, [3]);
-    //         timerseconds = timerevent / 1000;
-    //         console.log.apply(timerseconds);
-    //          stuff.setText(timerseconds);
-    //     }
-    // }
 
     create() {
 
@@ -100,21 +87,6 @@ class First extends Phaser.Scene {
                 }
             });
 
-        let RectSpawn = this.add.image(250, 50, 'rect')
-            .setScale(0.25)
-            .setInteractive()
-            .on('pointerdown', () => {
-                if (rectNum < 4) {
-                    this.matter.add.image(250, 50, 'rect')
-                        .setScale(0.25);
-                    rectNum += 1;
-                    //
-                }
-            })
-            .on('pointerup', () => {
-                this.add.text(700,700,"TEST");
-            });
-
 
         let longSpawn = this.add.image(475, 50, 'long')
             .setScale(0.25)
@@ -128,48 +100,12 @@ class First extends Phaser.Scene {
                 }
             });
 
-        this.add.text(1780,10,"Reset")
-        .setFontSize(40)
+        this.add.text(1820,40,"Reset")
         .setInteractive()
         .on('pointerdown', () => {
-            this.scene.start('first');
+            this.gotoScene('first');
         });
 
-
-
-        // let floor = this.matter.add.image(620, 1220, 'floor');
-        // floor.setStatic(true);
-
-        // this.matter.add.rectangle(50, 270, 50, 50,{
-        //     isStatic: true
-        // });
-
-        // const stack = this.matter.add.stack(250, 50, 8, 6, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.rectangle(x, y, 50, 50, Phaser.Math.Between(20, 40)));
-
-        // const stack2 = this.matter.add.stack(950, 50, 4, 2, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.rectangle(x, y, 100, 50, Phaser.Math.Between(20, 40)));
-
-        // const stack3 = this.matter.add.stack(250, 50, 2, 2, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.trapezoid(x, y, 50, 50, 1));
-
-
-        // this.matter.add.rectangle(30, 990, 220, 380, {
-        //     isStatic: true,
-        //     chamfer: { radius: 20 }
-        // });
-
-        // this.matter.add.rectangle(1070, 990, 220, 380, {
-        //     isStatic: true,
-        //     chamfer: { radius: 20 }
-        // }),
-
-        //     this.matter.add.worldConstraint(bridge.bodies[0], 2, 0.9, {
-        //         pointA: { x: 140, y: 800 },
-        //         pointB: { x: -25, y: 0 }
-        //     });
-
-        // this.matter.add.worldConstraint(bridge.bodies[bridge.bodies.length - 1], 2, 0.9, {
-        //     pointA: { x: 960, y: 800 },
-        //     pointB: { x: 25, y: 0 }
-        // });
 
 
 
