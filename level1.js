@@ -84,56 +84,65 @@ class First extends Phaser.Scene {
         // });
 
 
-        let boxNum = 0;
-        let rectNum = 0;
-        let longNum = 0;
+        let boxNum = 5;
+        let rectNum = 4;
+        let longNum = 2;
+
+        let boxText = this.add.text(90, 100, boxNum)
+            .setFontSize(35);
 
         let squareSpawn = this.add.image(100, 50, 'box')
             .setScale(0.25)
             .setInteractive()
             .on('pointerdown', () => {
-                if (boxNum < 5) {
+                if (boxNum > 0) {
                     this.matter.add.image(100, 50, 'box')
                         .setScale(0.25);
-                    boxNum += 1;
-                    this.add.text(200, 200, boxNum);
+                    boxNum -= 1;
+                    boxText.setText(boxNum);
                 }
             });
+
+
+        let rectText = this.add.text(250, 100, rectNum)
+            .setFontSize(35);
 
         let RectSpawn = this.add.image(250, 50, 'rect')
             .setScale(0.25)
             .setInteractive()
             .on('pointerdown', () => {
-                if (rectNum < 4) {
+                if (rectNum > 0) {
                     this.matter.add.image(250, 50, 'rect')
                         .setScale(0.25);
-                    rectNum += 1;
-                    //
+                    rectNum -= 1;
+                    rectText.setText(rectNum);
                 }
             })
             .on('pointerup', () => {
-                this.add.text(700,700,"TEST");
+                this.add.text(700, 700, "TEST");
             });
 
+        let longText = this.add.text(470, 100, longNum)
+            .setFontSize(35);
 
         let longSpawn = this.add.image(475, 50, 'long')
             .setScale(0.25)
             .setInteractive()
             .on('pointerdown', () => {
-                if (longNum < 2) {
+                if (longNum > 0) {
                     this.matter.add.image(475, 50, 'long')
                         .setScale(0.25);
-                    longNum += 1;
-                    //
+                    longNum -= 1;
+                    longText.setText(longNum);
                 }
             });
 
-        this.add.text(1780,10,"Reset")
-        .setFontSize(40)
-        .setInteractive()
-        .on('pointerdown', () => {
-            this.scene.start('first');
-        });
+        this.add.text(1780, 10, "Reset")
+            .setFontSize(40)
+            .setInteractive()
+            .on('pointerdown', () => {
+                this.scene.start('first');
+            });
 
 
 
