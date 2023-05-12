@@ -83,24 +83,36 @@ class First extends Phaser.Scene {
         //     }
         // });
 
-        let squareItem = this.matter.add.image(10, 10, 'box')
-            .setScale(0.25);
 
+        let boxNum = 0;
+        let rectNum = 0;
+        let longNum = 0;
 
         let squareSpawn = this.add.image(100, 50, 'box')
             .setScale(0.25)
             .setInteractive()
             .on('pointerdown', () => {
-                this.matter.add.image(100, 50, 'box')
-                    .setScale(0.25);
+                if (boxNum < 5) {
+                    this.matter.add.image(100, 50, 'box')
+                        .setScale(0.25);
+                    boxNum += 1;
+                    this.add.text(200, 200, boxNum);
+                }
             });
 
         let RectSpawn = this.add.image(250, 50, 'rect')
             .setScale(0.25)
             .setInteractive()
             .on('pointerdown', () => {
-                this.matter.add.image(250, 50, 'rect')
-                    .setScale(0.25);
+                if (rectNum < 4) {
+                    this.matter.add.image(250, 50, 'rect')
+                        .setScale(0.25);
+                    rectNum += 1;
+                    //
+                }
+            })
+            .on('pointerup', () => {
+                this.add.text(700,700,"TEST");
             });
 
 
@@ -108,8 +120,12 @@ class First extends Phaser.Scene {
             .setScale(0.25)
             .setInteractive()
             .on('pointerdown', () => {
-                this.matter.add.image(475, 50, 'long')
-                    .setScale(0.25);
+                if (longNum < 2) {
+                    this.matter.add.image(475, 50, 'long')
+                        .setScale(0.25);
+                    longNum += 1;
+                    //
+                }
             });
 
 
