@@ -12,18 +12,9 @@ class First extends Phaser.Scene {
         this.load.image("triangle", "Triangle.png");
     }
 
-    // update() {
-    //     let timerseconds = 0;
-    //     let timerevent = 0;
-    //     let stuff = this.add.text(50,50, timerseconds);
+    update() {
 
-    //     if (timerseconds < 6000000) {
-    //         timerevent = Phaser.Math.CeilTo(this.time.now, [3]);
-    //         timerseconds = timerevent / 1000;
-    //         console.log.apply(timerseconds);
-    //          stuff.setText(timerseconds);
-    //     }
-    // }
+    }
 
     create() {
 
@@ -31,25 +22,8 @@ class First extends Phaser.Scene {
         this.h = this.game.config.height;
         this.s = this.game.config.width * 0.01;
 
-        //this.add.text(50,50,"Test:" + timerseconds);
-
         this.cameras.main.setBackgroundColor('#444');
         this.cameras.main.fadeIn(this.transitionDuration, 0, 0, 0);
-
-        // this.add.rectangle(this.w * 0.75, 0, this.w * 0.25, this.h).setOrigin(0, 0).setFillStyle(0);
-        // this.add.text(this.w * 0.75 + this.s, this.s)
-        //     .setText(this.name)
-        //     .setStyle({ fontSize: `${3 * this.s}px` })
-        //     .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
-
-        // this.messageBox = this.add.text(this.w * 0.75 + this.s, this.h * 0.33)
-        //     .setStyle({ fontSize: `${2 * this.s}px`, color: '#eea' })
-        //     .setWordWrapWidth(this.w * 0.25 - 2 * this.s);
-
-        // this.inventoryBanner = this.add.text(this.w * 0.75 + this.s, this.h * 0.66)
-        //     .setStyle({ fontSize: `${2 * this.s}px` })
-        //     .setText("Inventory")
-        //     .setAlpha(0);
 
         this.add.text(this.w - 3 * this.s, this.h - 3 * this.s, "📺")
             .setStyle({ fontSize: `${2 * this.s}px` })
@@ -64,45 +38,132 @@ class First extends Phaser.Scene {
 
         this.matter.world.setBounds();
 
-        this.matter.add.mouseSpring();
+        this.matter.add.mouseSpring({ length: 1, stiffness: 1, angularStiffness: 0.9 });
 
         const group = this.matter.world.nextGroup(true);
 
-        // const bridge = this.matter.add.stack(160, 290, 23, 1, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.rectangle(x - 20, y, 53, 20, {
-        //     collisionFilter: { group: group },
-        //     chamfer: 5,
-        //     density: 0.005,
-        //     frictionAir: 0.05
-        // }));
+        let resting = true;
+        let holding = false;
+        let sensAct = false;
+        let goalProg = 0;
 
-        // this.matter.add.chain(bridge, 0.3, 0, -0.3, 0, {
-        //     stiffness: 1,
-        //     length: 0,
-        //     render: {
-        //         visible: false
-        //     }
-        // });
+        //pointer down set holding to true, pointer up wait 2 seconds and set holding to false
+        //
 
+        let goal = this.matter.add.rectangle(1000, 500, 1000, 2, {
+            isStatic: true,
+            isSensor: true
+        });
+
+        let sens = this.add.text(800, 800, "");
+        let goalTest = this.add.text(300, 300, "");
+
+        //IDEA
+        // When pointer up delay check, loop collision sensor thru array 
+        //Might need to remover snesor prop and just use normal collision
+        let play = this.add.text(700, 500, "")
+        this.matter.world.on('collisionstart', event => {
+            const pairs = event.pairs;
+            for (let i = 0; i < pairs.length; i++) {
+                const bodyA = pairs[i].bodyA;
+                const bodyB = pairs[i].bodyB;
+                //if (resting = true) {
+                if (pairs[i].isSensor) {
+                    let goalBar;
+                    let Shape;
+                    if (bodyA.isSensor) {
+                        Shape = bodyB;
+                        goalBar = bodyA;
+                    }
+                    else if (bodyB.isSensor) {
+                        Shape = bodyA;
+                        goalBar = bodyB;
+                    }
+                    sens.setText("Sensor Activated. Resting is true " + resting);
+                    sensAct = true;
+                    play.setText("Is a sensor");
+                }
+                else if (pairs[i].isSensor == false) {
+                    play.setText("Not a sensor");
+                }
+                // }
+            }
+        });
+
+        this.matter.world.on('collisionend', event => {
+            const pairs = event.pairs;
+            for (let i = 0; i < pairs.length; i++) {
+                const bodyA = pairs[i].bodyA;
+                const bodyB = pairs[i].bodyB;
+                if (pairs[i].isSensor) {
+                    sens.setText("Sensor NOT Activated.");
+                    sensAct = false;
+                }
+            }
+        });
+
+        let testy = this.add.text(550, 500, '');
 
         let boxNum = 5;
         let rectNum = 4;
         let longNum = 2;
+        let shapeHolder = [];
+        let p = 0;
+        this.targets = this.add.group();
 
         let boxText = this.add.text(90, 100, boxNum)
             .setFontSize(35);
 
-        let squareSpawn = this.add.image(100, 50, 'box')
-            .setScale(0.25)
-            .setInteractive()
-            .on('pointerdown', () => {
-                if (boxNum > 0) {
-                    this.matter.add.image(100, 50, 'box')
-                        .setScale(0.25);
-                    boxNum -= 1;
-                    boxText.setText(boxNum);
-                }
-            });
+        // let squareSpawn = this.add.image(100, 50, 'box')
+        //     .setScale(0.25)
+        //     .setInteractive()
+        //     .on('pointerdown', () => {
+        //         if (boxNum > 0) {
+        //             /* shapeHolder[p] =  */this.matter.add.image(100, 50, 'box')
+        //                 .setScale(0.25)
+        //                 .setSleepEvents(true, true);
+        //             boxNum -= 1;
+        //             boxText.setText(boxNum);
+        //             p++;
+        //         }
+        //     });
 
+        let holdCheck = this.add.text(1000, 1000, '');
+        let delayCheck = this.add.text(1500, 800, "");
+
+        this.input.on('pointerdown', pointer => {
+            if (pointer.leftButtonDown()) {
+                holding = true;
+                resting = false;
+                holdCheck.setText("Clicking...");
+                delayCheck.setText("Button is down so not resting");
+            }
+        });
+
+        this.input.on('pointerup', pointer => {
+            if (pointer.leftButtonReleased()) {
+                this.time.delayedCall(3000, () => {
+                    if (pointer.leftButtonDown() == false) {
+                        resting = true;
+                        holding = false;
+                        delayCheck.setText("Button is up, so is resting");
+                        if (sensAct == true && holding == false && resting == true) {
+
+                            //this.scene.start('first')
+                        }
+                        testy.setText(sensAct + '' + holding + '' + resting);
+                    }
+                    else {
+                        resting = false;
+                        holding = true;
+                        this.time.removeAllEvents();
+                        delayCheck.setText("Button is down so not resting");
+
+                    }
+                });
+                holdCheck.setText("Not clicking...");
+            }
+        })
 
         let rectText = this.add.text(250, 100, rectNum)
             .setFontSize(35);
@@ -112,30 +173,46 @@ class First extends Phaser.Scene {
             .setInteractive()
             .on('pointerdown', () => {
                 if (rectNum > 0) {
-                    this.matter.add.image(250, 50, 'rect')
-                        .setScale(0.25);
+                    /* shapeHolder[p] =  */ let target = this.matter.add.image(250, 50, 'rect');
+                    target.setScale(0.25);
+                    target.setSleepEvents(true, true);
+                    target.setSleepThreshold(60);
                     rectNum -= 1;
                     rectText.setText(rectNum);
+                    this.targets.add(target);
                 }
             })
             .on('pointerup', () => {
                 this.add.text(700, 700, "TEST");
             });
+        this.matter.world.on('sleepstart', (event) => {
+            rectText.setText("SLEEEEEEEEEEEP");
+        });
+        this.matter.world.on('sleepend', (event) => {
+            rectText.setText("Awaaaaaake");
+        });
+
+     this.matter.world.on('sleepstart', function(event, item){
+        if(this.targets.getChildren().some(target => target.body.isSleeping)))
+     })
 
         let longText = this.add.text(470, 100, longNum)
             .setFontSize(35);
 
-        let longSpawn = this.add.image(475, 50, 'long')
-            .setScale(0.25)
-            .setInteractive()
-            .on('pointerdown', () => {
-                if (longNum > 0) {
-                    this.matter.add.image(475, 50, 'long')
-                        .setScale(0.25);
-                    longNum -= 1;
-                    longText.setText(longNum);
-                }
-            });
+        // let longSpawn = this.add.image(475, 50, 'long')
+        //     .setScale(0.25)
+        //     .setInteractive()
+        //     .on('pointerdown', () => {
+        //         if (longNum > 0) {
+        //             /* shapeHolder[p] = */ this.matter.add.image(475, 50, 'long')
+        //                 .setScale(0.25)
+        //                 .setSleepEvents(true, true);
+        //             longNum -= 1;
+        //             longText.setText(longNum);
+        //             p++;
+        //         }
+        //     });
+
 
         this.add.text(1780, 10, "Reset")
             .setFontSize(40)
@@ -143,45 +220,6 @@ class First extends Phaser.Scene {
             .on('pointerdown', () => {
                 this.scene.start('first');
             });
-
-
-
-        // let floor = this.matter.add.image(620, 1220, 'floor');
-        // floor.setStatic(true);
-
-        // this.matter.add.rectangle(50, 270, 50, 50,{
-        //     isStatic: true
-        // });
-
-        // const stack = this.matter.add.stack(250, 50, 8, 6, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.rectangle(x, y, 50, 50, Phaser.Math.Between(20, 40)));
-
-        // const stack2 = this.matter.add.stack(950, 50, 4, 2, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.rectangle(x, y, 100, 50, Phaser.Math.Between(20, 40)));
-
-        // const stack3 = this.matter.add.stack(250, 50, 2, 2, 0, 0, (x, y) => Phaser.Physics.Matter.Matter.Bodies.trapezoid(x, y, 50, 50, 1));
-
-
-        // this.matter.add.rectangle(30, 990, 220, 380, {
-        //     isStatic: true,
-        //     chamfer: { radius: 20 }
-        // });
-
-        // this.matter.add.rectangle(1070, 990, 220, 380, {
-        //     isStatic: true,
-        //     chamfer: { radius: 20 }
-        // }),
-
-        //     this.matter.add.worldConstraint(bridge.bodies[0], 2, 0.9, {
-        //         pointA: { x: 140, y: 800 },
-        //         pointB: { x: -25, y: 0 }
-        //     });
-
-        // this.matter.add.worldConstraint(bridge.bodies[bridge.bodies.length - 1], 2, 0.9, {
-        //     pointA: { x: 960, y: 800 },
-        //     pointB: { x: 25, y: 0 }
-        // });
-
-
-
 
     }
 
