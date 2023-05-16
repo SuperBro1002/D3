@@ -110,6 +110,7 @@ class First extends Phaser.Scene {
         let shapeHolder = [];
         let p = 0;
         this.targets = this.add.group();
+        let slpt = this.add.text(100,250,"");
 
         let boxText = this.add.text(90, 100, boxNum)
             .setFontSize(35);
@@ -186,15 +187,23 @@ class First extends Phaser.Scene {
                 this.add.text(700, 700, "TEST");
             });
         this.matter.world.on('sleepstart', (event) => {
+            if(this.targets.getChildren().some(target => target.body.isSleeping)){
+                slpt.setText("HAHAHAAHAHAHAAHAHA");
+            }
+            else {
+                slpt.setText("BOOOOOO");
+            }
             rectText.setText("SLEEEEEEEEEEEP");
         });
         this.matter.world.on('sleepend', (event) => {
             rectText.setText("Awaaaaaake");
         });
 
-     this.matter.world.on('sleepstart', function(event, item){
-        if(this.targets.getChildren().some(target => target.body.isSleeping)))
-     })
+    //  this.matter.world.on('sleepstart', function(event, item){
+    //     if(this.targets.getChildren().some(target => target.body.isSleeping)){
+
+    //     }
+    //  });
 
         let longText = this.add.text(470, 100, longNum)
             .setFontSize(35);
