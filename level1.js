@@ -1,4 +1,7 @@
+let shapeHolder = [];
+let validCon = false;
 class First extends Phaser.Scene {
+
 
     constructor() {
         super('first');
@@ -13,7 +16,32 @@ class First extends Phaser.Scene {
     }
 
     update() {
+        // let stahp = false;
+        // let bick = this.add.text(1700, 600, "");
+        // let allSum = this.add.text(1500, 700, "");
+        // let sum = 0;
 
+        // for (let b = 0; b < shapeHolder.length; b++) {
+        //     if (shapeHolder[b].body?.isSleeping == false && stahp == true) {
+        //         // bick.setText("Not sleeping");
+        //         stahp = false;
+        //     }
+        //     else if (shapeHolder[b].body?.isSleeping == true) {
+        //         // bick.setText("Sleeping?");
+        //         stahp = true;
+        //         sum++;
+        //         if (sum >= shapeHolder.length) {
+        //             //allSum.setText("");
+        //             //allSum.setText("I think they're all sleeping");
+        //             validCon = true;
+        //         }
+        //         else {
+        //             validCon = false;
+        //             // allSum.setText("");
+        //             // allSum.setText("They aren't all sleeping");
+        //         }
+        //     }
+        // }
     }
 
     create() {
@@ -46,11 +74,12 @@ class First extends Phaser.Scene {
         let holding = false;
         let sensAct = false;
         let goalProg = 0;
+        let touchGoal = false;
 
         //pointer down set holding to true, pointer up wait 2 seconds and set holding to false
         //
 
-        let goal = this.matter.add.rectangle(1000, 500, 1000, 2, {
+        let goal = this.matter.add.rectangle(1000, 780, 1000, 2, {
             isStatic: true,
             isSensor: true
         });
@@ -62,148 +91,78 @@ class First extends Phaser.Scene {
         // When pointer up delay check, loop collision sensor thru array 
         //Might need to remover snesor prop and just use normal collision
         let play = this.add.text(700, 500, "")
-        this.matter.world.on('collisionstart', event => {
+        this.matter.world.on('collisionactive', event => {
             const pairs = event.pairs;
             for (let i = 0; i < pairs.length; i++) {
                 const bodyA = pairs[i].bodyA;
                 const bodyB = pairs[i].bodyB;
-                //if (resting = true) {
                 if (pairs[i].isSensor) {
                     let goalBar;
+                    //console.log("Is senosro");
                     let Shape;
-                    if (bodyA.isSensor) {
-                        Shape = bodyB;
-                        goalBar = bodyA;
-                    }
-                    else if (bodyB.isSensor) {
-                        Shape = bodyA;
-                        goalBar = bodyB;
-                    }
+                    //    console.log("Active collison");
                     sens.setText("Sensor Activated. Resting is true " + resting);
                     sensAct = true;
                     play.setText("Is a sensor");
+                    touchGoal = true;
                 }
-                else if (pairs[i].isSensor == false) {
-                    play.setText("Not a sensor");
-                }
-                // }
+
+                else if ()
+                //console.log(touchGoal);
             }
         });
 
-        this.matter.world.on('collisionend', event => {
-            const pairs = event.pairs;
-            for (let i = 0; i < pairs.length; i++) {
-                const bodyA = pairs[i].bodyA;
-                const bodyB = pairs[i].bodyB;
-                if (pairs[i].isSensor) {
-                    sens.setText("Sensor NOT Activated.");
-                    sensAct = false;
+        this.add.text(700, 300, "CHECK")
+            .setFontSize(40)
+            .setInteractive()
+            .on('pointerdown', () => {
+                if (touchGoal == true) {
+                    this.scene.start('first');
                 }
-            }
-        });
+            });
 
-        let testy = this.add.text(550, 500, '');
 
-        let boxNum = 5;
+        let boxNum = 10;
         let rectNum = 4;
         let longNum = 2;
-        let shapeHolder = [];
         let p = 0;
         this.targets = this.add.group();
-        let slpt = this.add.text(100,250,"");
 
         let boxText = this.add.text(90, 100, boxNum)
             .setFontSize(35);
 
-        // let squareSpawn = this.add.image(100, 50, 'box')
-        //     .setScale(0.25)
-        //     .setInteractive()
-        //     .on('pointerdown', () => {
-        //         if (boxNum > 0) {
-        //             /* shapeHolder[p] =  */this.matter.add.image(100, 50, 'box')
-        //                 .setScale(0.25)
-        //                 .setSleepEvents(true, true);
-        //             boxNum -= 1;
-        //             boxText.setText(boxNum);
-        //             p++;
-        //         }
-        //     });
-
-        let holdCheck = this.add.text(1000, 1000, '');
-        let delayCheck = this.add.text(1500, 800, "");
-
-        this.input.on('pointerdown', pointer => {
-            if (pointer.leftButtonDown()) {
-                holding = true;
-                resting = false;
-                holdCheck.setText("Clicking...");
-                delayCheck.setText("Button is down so not resting");
-            }
-        });
-
-        this.input.on('pointerup', pointer => {
-            if (pointer.leftButtonReleased()) {
-                this.time.delayedCall(3000, () => {
-                    if (pointer.leftButtonDown() == false) {
-                        resting = true;
-                        holding = false;
-                        delayCheck.setText("Button is up, so is resting");
-                        if (sensAct == true && holding == false && resting == true) {
-
-                            //this.scene.start('first')
-                        }
-                        testy.setText(sensAct + '' + holding + '' + resting);
-                    }
-                    else {
-                        resting = false;
-                        holding = true;
-                        this.time.removeAllEvents();
-                        delayCheck.setText("Button is down so not resting");
-
-                    }
-                });
-                holdCheck.setText("Not clicking...");
-            }
-        })
+        let squareSpawn = this.add.image(100, 50, 'box')
+            .setScale(0.25)
+            .setInteractive()
+            .on('pointerdown', () => {
+                if (boxNum > 0) {
+                    shapeHolder[p] = this.matter.add.image(100, 50, 'box')
+                        .setScale(0.25)
+                        .setSleepEvents(true, true);
+                    boxNum -= 1;
+                    boxText.setText(boxNum);
+                    p++;
+                }
+            });
 
         let rectText = this.add.text(250, 100, rectNum)
             .setFontSize(35);
 
-        let RectSpawn = this.add.image(250, 50, 'rect')
-            .setScale(0.25)
-            .setInteractive()
-            .on('pointerdown', () => {
-                if (rectNum > 0) {
-                    /* shapeHolder[p] =  */ let target = this.matter.add.image(250, 50, 'rect');
-                    target.setScale(0.25);
-                    target.setSleepEvents(true, true);
-                    target.setSleepThreshold(60);
-                    rectNum -= 1;
-                    rectText.setText(rectNum);
-                    this.targets.add(target);
-                }
-            })
-            .on('pointerup', () => {
-                this.add.text(700, 700, "TEST");
-            });
-        this.matter.world.on('sleepstart', (event) => {
-            if(this.targets.getChildren().some(target => target.body.isSleeping)){
-                slpt.setText("HAHAHAAHAHAHAAHAHA");
-            }
-            else {
-                slpt.setText("BOOOOOO");
-            }
-            rectText.setText("SLEEEEEEEEEEEP");
-        });
-        this.matter.world.on('sleepend', (event) => {
-            rectText.setText("Awaaaaaake");
-        });
-
-    //  this.matter.world.on('sleepstart', function(event, item){
-    //     if(this.targets.getChildren().some(target => target.body.isSleeping)){
-
-    //     }
-    //  });
+        // let RectSpawn = this.add.image(250, 50, 'rect')
+        //     .setScale(0.25)
+        //     .setInteractive()
+        //     .on('pointerdown', () => {
+        //         if (rectNum > 0) {
+        //             /* shapeHolder[p] =  */ let target = this.matter.add.image(250, 50, 'rect');
+        //             target.setScale(0.25);
+        //             target.setSleepEvents(true, true);
+        //             target.setSleepThreshold(60);
+        //             rectNum -= 1;
+        //             rectText.setText(rectNum);
+        //             this.targets.add(target);
+        //         }
+        //     })
+        // 
 
         let longText = this.add.text(470, 100, longNum)
             .setFontSize(35);
@@ -229,6 +188,31 @@ class First extends Phaser.Scene {
             .on('pointerdown', () => {
                 this.scene.start('first');
             });
+
+        // this.input.on('pointerup', pointer => {
+        //     if (pointer.leftButtonReleased()) {
+        //         this.time.delayedCall(3000, () => {
+        //             if (pointer.leftButtonDown() == false) {
+        //                 resting = true;
+        //                 holding = false;
+        //                 delayCheck.setText("Button is up, so is resting");
+        //                 if (sensAct == true && holding == false && resting == true) {
+
+        //                     //this.scene.start('first')
+        //                 }
+        //                 testy.setText(sensAct + '' + holding + '' + resting);
+        //             }
+        //             else {
+        //                 resting = false;
+        //                 holding = true;
+        //                 this.time.removeAllEvents();
+        //                 delayCheck.setText("Button is down so not resting");
+
+        //             }
+        //         });
+        //         holdCheck.setText("Not clicking...");
+        //     }
+        // })
 
     }
 
