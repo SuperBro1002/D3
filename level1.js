@@ -78,11 +78,17 @@ class First extends Phaser.Scene {
 
         //pointer down set holding to true, pointer up wait 2 seconds and set holding to false
         //
+        let goalTouch = false;
+        let goal = this.matter.add.image(1000, 780, 'rect')
+        .setStatic(true)
+        .setSensor(true)
+        .setOnCollideActive(() => goalTouch = true);
+       // .setOnCollide(() => console.log("WHY"))
+        //.setOnCollideEnd(()=> console.log("END"));
+        
+        if()
 
-        let goal = this.matter.add.rectangle(1000, 780, 1000, 2, {
-            isStatic: true,
-            isSensor: true
-        });
+    console.log(goal);
 
         let sens = this.add.text(800, 800, "");
         let goalTest = this.add.text(300, 300, "");
@@ -91,26 +97,24 @@ class First extends Phaser.Scene {
         // When pointer up delay check, loop collision sensor thru array 
         //Might need to remover snesor prop and just use normal collision
         let play = this.add.text(700, 500, "")
-        this.matter.world.on('collisionactive', event => {
-            const pairs = event.pairs;
-            for (let i = 0; i < pairs.length; i++) {
-                const bodyA = pairs[i].bodyA;
-                const bodyB = pairs[i].bodyB;
-                if (pairs[i].isSensor) {
-                    let goalBar;
-                    //console.log("Is senosro");
-                    let Shape;
-                    //    console.log("Active collison");
-                    sens.setText("Sensor Activated. Resting is true " + resting);
-                    sensAct = true;
-                    play.setText("Is a sensor");
-                    touchGoal = true;
-                }
-
-                else if ()
-                //console.log(touchGoal);
-            }
-        });
+        // this.matter.world.on('collisionactive', event => {
+        //     const pairs = event.pairs;
+        //     for (let i = 0; i < pairs.length; i++) {
+        //         const bodyA = pairs[i].bodyA;
+        //         const bodyB = pairs[i].bodyB;
+        //         if (pairs[i].isSensor) {
+        //             let goalBar;
+        //             //console.log("Is senosro");
+        //             let Shape;
+        //             //    console.log("Active collison");
+        //             sens.setText("Sensor Activated. Resting is true " + resting);
+        //             sensAct = true;
+        //             play.setText("Is a sensor");
+        //             touchGoal = true;
+        //         }
+        //         //console.log(touchGoal);
+        //     }
+        // });
 
         this.add.text(700, 300, "CHECK")
             .setFontSize(40)
@@ -120,7 +124,6 @@ class First extends Phaser.Scene {
                     this.scene.start('first');
                 }
             });
-
 
         let boxNum = 10;
         let rectNum = 4;
@@ -138,6 +141,7 @@ class First extends Phaser.Scene {
                 if (boxNum > 0) {
                     shapeHolder[p] = this.matter.add.image(100, 50, 'box')
                         .setScale(0.25)
+                        .setOnCollide(() => console.log("THING"))
                         .setSleepEvents(true, true);
                     boxNum -= 1;
                     boxText.setText(boxNum);
