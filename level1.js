@@ -48,7 +48,7 @@ class First extends Phaser.Scene {
         let goalTouch = false;
         let checkVisible = true;
 
-        let fakeGoal = this.matter.add.image(1000, 780, 'goal')
+        let fakeGoal = this.matter.add.image(1000, 680, 'goal')
             .setStatic(true)
             .setSensor(true);
 
@@ -59,18 +59,18 @@ class First extends Phaser.Scene {
             .setTint(0x000000)
             .setOnCollideActive(() => goalTouch = true);
 
-        let midCheck = this.add.text(700, 300, "CHECKING...")
-            .setFontSize(40)
+        let midCheck = this.add.text(800, 20, "CHECKING...")
+            .setFontSize(60)
             .setVisible(false);
 
-        let check = this.add.text(700, 300, "CHECK")
-            .setFontSize(40)
+        let check = this.add.text(800, 20, "CHECK")
+            .setFontSize(60)
             .setInteractive()
             .on('pointerdown', () => {
                 check.setVisible(false);
                 midCheck.setVisible(true);
                 this.time.delayedCall(2000, () => {
-                    goal.setY(750);
+                    goal.setY(680);
                     fakeGoal.setY(2777);
                 });
 
@@ -80,7 +80,7 @@ class First extends Phaser.Scene {
                     }
                     check.setVisible(true);
                     midCheck.setVisible(false);
-                    fakeGoal.setY(780);
+                    fakeGoal.setY(680);
                     goal.setY(1780);
                 });
             });
@@ -95,7 +95,7 @@ class First extends Phaser.Scene {
 
         this.matter.world.on('dragend', () => {
             this.time.delayedCall(2000, () => {
-                check.setY(300);
+                check.setY(20);
                 checkVisible = true;
             });
 
@@ -114,6 +114,7 @@ class First extends Phaser.Scene {
                         .setOnCollide(() => console.log("Box collision"))
                         .setSleepEvents(true, true);
                     boxNum -= 1;
+                    shapesUsed++;
                     boxText.setText(boxNum);
 
                 }
@@ -131,6 +132,7 @@ class First extends Phaser.Scene {
                         .setScale(0.25)
                         .setSleepEvents(true, true);
                     rectNum -= 1;
+                    shapesUsed++;
                     rectText.setText(rectNum);
 
                 }
@@ -149,6 +151,7 @@ class First extends Phaser.Scene {
                         .setScale(0.25)
                         .setSleepEvents(true, true);
                     longNum -= 1;
+                    shapesUsed++;
                     longText.setText(longNum);
 
                 }
@@ -199,6 +202,32 @@ class Results extends Phaser.Scene {
                 } else {
                     this.scale.startFullscreen();
                 }
+            });
+
+        this.add.text(620, 40, "RESULTS")
+            .setFontSize(170);
+
+        this.add.text(620, 440, "Shapes Used: " + shapesUsed)
+            .setFontSize(50);
+
+        let stars = this.add.text(610, 540, "")
+        .setFontSize(100);
+
+        if (shapesUsed > 9) {
+            stars.setText("SCORE: ⭐☆☆");
+        }
+        else if (shapesUsed > 6) {
+            stars.setText("SCORE: ⭐⭐☆");
+        }
+        else {
+            stars.setText("SCORE: ⭐⭐⭐");
+        }
+
+        this.add.text(670, 880, "Next Level")
+        .setFontSize(100)
+        .setInteractive()
+            .on('pointerdown', () => {
+                this.scene.start('second');
             });
 
     }
