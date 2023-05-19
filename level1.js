@@ -21,6 +21,15 @@ class First extends Phaser.Scene {
 
     create() {
 
+
+        
+        // this.add.text(670, 880, "HI")
+        // .setFontSize(100)
+        // .setInteractive()
+        // .on('pointerdown', () => {
+        //     this.scene.start('third');
+        // });
+
         this.w = this.game.config.width;
         this.h = this.game.config.height;
         this.s = this.game.config.width * 0.01;
@@ -84,9 +93,10 @@ class First extends Phaser.Scene {
                     goal.setY(1780);
                 });
             });
-        let boxNum = 10;
-        let rectNum = 4;
-        let longNum = 2;
+
+        let boxNum = 5;
+        let rectNum = 6;
+        let longNum = 4;
 
         this.matter.world.on('drag', () => {
             check.setY(2000);
@@ -98,7 +108,6 @@ class First extends Phaser.Scene {
                 check.setY(20);
                 checkVisible = true;
             });
-
         })
 
         let boxText = this.add.text(90, 100, boxNum)
@@ -116,7 +125,6 @@ class First extends Phaser.Scene {
                     boxNum -= 1;
                     shapesUsed++;
                     boxText.setText(boxNum);
-
                 }
             });
 
@@ -134,7 +142,6 @@ class First extends Phaser.Scene {
                     rectNum -= 1;
                     shapesUsed++;
                     rectText.setText(rectNum);
-
                 }
             });
 
@@ -153,10 +160,8 @@ class First extends Phaser.Scene {
                     longNum -= 1;
                     shapesUsed++;
                     longText.setText(longNum);
-
                 }
             });
-
 
         this.add.text(1780, 10, "Reset")
             .setFontSize(40)
@@ -164,10 +169,7 @@ class First extends Phaser.Scene {
             .on('pointerdown', () => {
                 this.scene.start('first');
             });
-
     }
-
-
 }
 
 class Results extends Phaser.Scene {
@@ -211,12 +213,12 @@ class Results extends Phaser.Scene {
             .setFontSize(50);
 
         let stars = this.add.text(610, 540, "")
-        .setFontSize(100);
+            .setFontSize(100);
 
-        if (shapesUsed > 9) {
+        if (shapesUsed > 10) {
             stars.setText("SCORE: ⭐☆☆");
         }
-        else if (shapesUsed > 6) {
+        else if (shapesUsed > 7) {
             stars.setText("SCORE: ⭐⭐☆");
         }
         else {
@@ -224,13 +226,11 @@ class Results extends Phaser.Scene {
         }
 
         this.add.text(670, 880, "Next Level")
-        .setFontSize(100)
-        .setInteractive()
+            .setFontSize(100)
+            .setInteractive()
             .on('pointerdown', () => {
                 this.scene.start('second');
             });
-
     }
-
 }
 
