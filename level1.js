@@ -21,8 +21,19 @@ class First extends Phaser.Scene {
 
     create() {
 
+        this.add.text(70, 150, "^ Click and drag shapes ^")
+            .setColor('lightgreen')
+            .setFontSize(30);
 
-        
+        this.add.text(720, 100, "^ Click here ^ when your structure\nis touching the goal line.")
+            .setColor('lightgreen')
+            .setFontSize(30);
+
+        this.add.text(1400, 700, "^ This is the goal line. ^ \nBuild a structure that \nreaches this height ")
+            .setColor('lightgreen')
+            .setFontSize(30);
+
+
         // this.add.text(670, 880, "HI")
         // .setFontSize(100)
         // .setInteractive()
@@ -61,7 +72,6 @@ class First extends Phaser.Scene {
             .setStatic(true)
             .setSensor(true);
 
-        //Move to 1000, 780 on active
         let goal = this.matter.add.image(1000, 1780, 'goal')
             .setStatic(true)
             .setSensor(true)
@@ -144,7 +154,6 @@ class First extends Phaser.Scene {
                     rectText.setText(rectNum);
                 }
             });
-
 
         let longText = this.add.text(470, 100, longNum)
             .setFontSize(35);
