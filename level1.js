@@ -56,6 +56,8 @@ class First extends Phaser.Scene {
                     this.scale.stopFullscreen();
                 } else {
                     this.scale.startFullscreen();
+                    this.scale.width = window.innerWidth;
+                    this.scale.height = window.innerHeight;
                 }
             });
 
