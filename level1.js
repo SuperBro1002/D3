@@ -29,6 +29,10 @@ class First extends Phaser.Scene {
             .setColor('lightgreen')
             .setFontSize(30);
 
+            this.add.text(720,200, "NOTE: YOU CANNOT WIN THE LEVEL WHILE\nCLICKING/DRAGGING A SHAPE.")
+            .setColor('red')
+            .setFontSize(30);
+
         this.add.text(1400, 700, "^ This is the goal line. ^ \nBuild a structure that \nreaches this height ")
             .setColor('lightgreen')
             .setFontSize(30);
